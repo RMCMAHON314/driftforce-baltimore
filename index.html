@@ -3,424 +3,1337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DriftForce - Stop LLM Hallucinations in Production</title>
+    <title>DriftForce - Next-Gen AI Consulting & Software | Baltimore</title>
+    <meta name="description" content="Woman-owned Maryland tech leader. Enterprise AI governance, contract enforcement, and next-generation consulting. Built in Baltimore.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-            line-height: 1.7; 
-            color: #1a1a1a;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        
+        :root {
+            --primary: #0066FF;
+            --primary-glow: #0066FF;
+            --accent: #00D4FF;
+            --dark: #000814;
+            --gray-900: #0F172A;
+            --gray-800: #1E293B;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748B;
+            --gray-400: #94A3B8;
+            --gray-300: #CBD5E1;
+            --gray-200: #E2E8F0;
+            --gray-100: #F1F5F9;
+            --gray-50: #F8FAFC;
+            --white: #FFFFFF;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --maryland-red: #E03A3E;
+            --maryland-gold: #FFC20E;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(0,102,255,0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0,212,255,0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(16,185,129,0.03) 0%, transparent 50%);
+            animation: drift 30s ease-in-out infinite;
+            z-index: -1;
+        }
+        
+        @keyframes drift {
+            0%, 100% { transform: rotate(0deg) translate(0, 0); }
+            33% { transform: rotate(1deg) translate(10px, -10px); }
+            66% { transform: rotate(-1deg) translate(-10px, 10px); }
+        }
         
         /* Header */
         header {
-            background: #fff;
-            padding: 20px 0;
-            border-bottom: 1px solid #e5e5e5;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-100);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .logo { font-size: 24px; font-weight: 700; color: #1a1a1a; }
         
-        /* Alert Banner */
-        .alert {
-            background: #dc2626;
-            color: white;
-            padding: 15px 0;
-            text-align: center;
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-badge {
+            background: linear-gradient(135deg, var(--maryland-red) 0%, var(--maryland-gold) 100%);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-glow) 50%, var(--accent) 100%);
+            background-size: 200% 200%;
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 100px;
+            text-decoration: none;
             font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(0,102,255,0.25);
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { background-position: 0% 50%; box-shadow: 0 4px 14px rgba(0,102,255,0.25); }
+            50% { background-position: 100% 50%; box-shadow: 0 4px 20px rgba(0,212,255,0.35); }
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,102,255,0.4);
         }
         
         /* Hero */
         .hero {
-            padding: 80px 0;
-            text-align: center;
+            padding: 160px 40px 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
         }
-        .hero h1 { 
-            font-size: 56px; 
-            font-weight: 700; 
-            line-height: 1.1;
-            margin-bottom: 20px;
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(0,102,255,0.05) 0%, rgba(0,212,255,0.05) 100%);
+            padding: 12px 24px;
+            border-radius: 100px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(0,102,255,0.2);
         }
-        .subtitle {
+        
+        .badge-icon {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(16,185,129,0.6);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        
+        .hero-badge span {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        h1 {
+            font-size: clamp(64px, 12vw, 96px);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--gray-600) 50%, var(--dark) 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 8s ease-in-out infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .hero-subtitle {
             font-size: 24px;
-            color: #666;
-            margin-bottom: 40px;
-        }
-        
-        /* Problem Evidence */
-        .evidence {
-            background: #000;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            padding: 30px;
-            border-radius: 8px;
-            margin: 60px auto;
+            line-height: 1.5;
+            color: var(--gray-600);
             max-width: 800px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .evidence .bad { color: #ff4444; font-weight: bold; }
-        
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin: 60px 0;
-            text-align: center;
-        }
-        .stat h3 { 
-            font-size: 48px; 
-            color: #dc2626; 
-            margin-bottom: 10px;
-        }
-        .stat p { color: #666; }
-        
-        /* Solution */
-        .solution {
-            background: #f8f8f8;
-            padding: 60px 0;
-            margin: 60px 0;
-        }
-        .detection-list {
-            font-size: 20px;
-            margin: 30px 0;
-        }
-        .detection-list li {
-            margin: 15px 0;
-            list-style: none;
-        }
-        .detection-list li:before {
-            content: "✓ ";
-            color: #10b981;
-            font-weight: bold;
-            margin-right: 10px;
+            margin-bottom: 24px;
         }
         
-        /* Demo Instructions */
-        .demo-section {
-            padding: 60px 0;
+        .hero-maryland {
+            font-size: 16px;
+            color: var(--gray-500);
+            margin-bottom: 48px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
         }
-        .demo-header {
-            background: #4f46e5;
-            color: white;
-            padding: 30px;
-            border-radius: 8px 8px 0 0;
-            text-align: center;
+        
+        .maryland-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--gray-50);
+            border-radius: 100px;
+            border: 1px solid var(--gray-200);
         }
-        .demo-steps {
-            background: white;
-            border: 2px solid #4f46e5;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            padding: 40px;
+        
+        .maryland-badge strong {
+            color: var(--gray-900);
         }
-        .step {
-            margin-bottom: 40px;
+        
+        .hero-cta-group {
             display: flex;
             gap: 20px;
+            margin-bottom: 80px;
         }
-        .step-number {
-            background: #4f46e5;
-            color: white;
-            width: 40px;
-            height: 40px;
+        
+        .btn {
+            padding: 16px 36px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 17px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 24px rgba(0,102,255,0.3);
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
             border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0,102,255,0.4);
+        }
+        
+        .btn-ghost {
+            background: var(--white);
+            color: var(--gray-900);
+            border: 2px solid var(--gray-200);
+        }
+        
+        .btn-ghost:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+        
+        /* Baltimore Section */
+        .baltimore-section {
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFF4E0 100%);
+            border: 2px solid var(--maryland-gold);
+            border-radius: 24px;
+            padding: 48px;
+            margin-bottom: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .baltimore-section::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(224,58,62,0.08) 0%, transparent 60%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+        
+        .baltimore-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .baltimore-badge {
+            background: linear-gradient(135deg, var(--maryland-red) 0%, var(--maryland-gold) 100%);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .baltimore-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .baltimore-content h3 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--maryland-red) 0%, var(--maryland-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .baltimore-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        .baltimore-item {
+            text-align: center;
+            background: rgba(255,255,255,0.8);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(224,58,62,0.2);
+        }
+        
+        .baltimore-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--maryland-red);
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .baltimore-label {
+            font-size: 14px;
+            color: var(--gray-700);
+            font-weight: 600;
+        }
+        
+        /* Vision Section */
+        .vision-section {
+            padding: 100px 40px;
+            background: linear-gradient(to bottom, var(--gray-50), var(--white));
+        }
+        
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        
+        h2 {
+            font-size: 56px;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--gray-600) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 20px;
+            color: var(--gray-600);
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        
+        .vision-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid var(--gray-100);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vision-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transform: translateY(-100%);
+            transition: transform 0.3s;
+        }
+        
+        .vision-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,102,255,0.15);
+            border-color: rgba(0,102,255,0.2);
+        }
+        
+        .vision-card:hover::before {
+            transform: translateY(0);
+        }
+        
+        .vision-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(0,102,255,0.1) 0%, rgba(0,212,255,0.1) 100%);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        .step-content h3 {
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-        .code {
-            background: #f4f4f4;
-            padding: 15px;
-            border-radius: 4px;
-            font-family: 'Monaco', monospace;
-            font-size: 13px;
-            margin: 15px 0;
-            overflow-x: auto;
-        }
-        .highlight {
-            background: #fef3c7;
-            padding: 2px 6px;
-            border-radius: 3px;
+            font-size: 32px;
+            margin-bottom: 24px;
         }
         
-        /* CTA */
-        .cta-section {
-            text-align: center;
-            padding: 80px 0;
-        }
-        .price-block {
-            font-size: 64px;
+        .vision-title {
+            font-size: 22px;
             font-weight: 700;
-            margin: 30px 0;
-        }
-        .cta-button {
-            display: inline-block;
-            background: #4f46e5;
-            color: white;
-            padding: 20px 60px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .cta-button:hover {
-            background: #4338ca;
+            margin-bottom: 16px;
+            color: var(--gray-900);
         }
         
-        /* Mobile */
+        .vision-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        /* Reality Section */
+        .reality-section {
+            padding: 100px 40px;
+            background: linear-gradient(to bottom, var(--dark), var(--gray-900));
+            color: var(--white);
+        }
+        
+        .reality-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .reality-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        
+        .reality-header h2 {
+            color: var(--white);
+            background: none;
+            -webkit-text-fill-color: var(--white);
+        }
+        
+        .reality-header p {
+            color: var(--gray-400);
+            font-size: 18px;
+            margin-top: 16px;
+        }
+        
+        .reality-window {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+        }
+        
+        .window-header {
+            background: rgba(0,0,0,0.4);
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .window-dots {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .window-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .dot-red { background: #FF5F57; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #27C93F; }
+        
+        .window-title {
+            color: var(--gray-400);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .reality-code {
+            padding: 40px;
+            font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--gray-300);
+        }
+        
+        .code-comment { color: #64748B; }
+        .code-string { color: #7EE787; }
+        .code-keyword { color: #79C0FF; }
+        .code-success { color: #7EE787; }
+        
+        /* Services Section */
+        .services-section {
+            padding: 100px 40px;
+            background: var(--white);
+        }
+        
+        .services-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .service-card {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            transition: all 0.4s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .service-card:hover {
+            border-color: var(--primary);
+            background: var(--white);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,102,255,0.12);
+        }
+        
+        .service-price {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        
+        .service-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--white);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        
+        .service-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--gray-900);
+        }
+        
+        .service-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .service-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s;
+        }
+        
+        .service-link:hover {
+            gap: 12px;
+        }
+        
+        /* Partnership Section */
+        .partnership-section {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+        }
+        
+        .partnership-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .partnership-text {
+            font-size: 22px;
+            color: var(--gray-700);
+            line-height: 1.7;
+            margin-bottom: 56px;
+        }
+        
+        .partnership-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin: 64px 0;
+        }
+        
+        .partnership-item {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid var(--gray-200);
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .partnership-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0,102,255,0.08);
+        }
+        
+        .partnership-item h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--gray-900);
+        }
+        
+        .partnership-item p {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 40px;
+            background: linear-gradient(135deg, var(--dark) 0%, #001F3F 100%);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-content h2 {
+            color: var(--white);
+            background: none;
+            -webkit-text-fill-color: var(--white);
+            margin-bottom: 32px;
+            font-size: 64px;
+        }
+        
+        .cta-content p {
+            font-size: 22px;
+            color: var(--gray-300);
+            margin-bottom: 56px;
+            line-height: 1.6;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+        }
+        
+        .cta-contact-info {
+            margin-top: 80px;
+            padding-top: 80px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .contact-name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .contact-role {
+            color: var(--gray-400);
+            margin-bottom: 32px;
+            font-size: 18px;
+        }
+        
+        .contact-links {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        
+        .contact-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.2s;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+        }
+        
+        .contact-links a:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 48px 40px;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .baltimore-built {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-700);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        
+        .footer-links a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-copy {
+            color: var(--gray-500);
+            font-size: 14px;
+            margin-top: 24px;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 36px; }
-            .stats { grid-template-columns: 1fr; }
-            .step { flex-direction: column; }
+            .nav-links { display: none; }
+            .hero-cta-group { flex-direction: column; }
+            .hero-maryland { flex-direction: column; align-items: flex-start; }
+            .baltimore-grid { grid-template-columns: 1fr; }
+            .vision-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            .partnership-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; }
+            h1 { font-size: 56px; }
+            h2 { font-size: 40px; }
         }
     </style>
 </head>
 <body>
-    <!-- Alert Banner -->
-    <div class="alert">
-        ⚠️ Your production LLMs are hallucinating right now. Customers are seeing it.
-    </div>
-
-    <!-- Header -->
     <header>
-        <div class="container">
-            <div class="logo">DriftForce API</div>
-        </div>
+        <nav>
+            <div class="logo-group">
+                <div class="logo">DriftForce</div>
+                <div class="logo-badge">MD TECH</div>
+            </div>
+            <div class="nav-links">
+                <a href="#vision">Vision</a>
+                <a href="#reality">Technology</a>
+                <a href="#services">Services</a>
+                <a href="#partnership">Partnership</a>
+                <a href="mailto:rob@infinitedatasolutions.com" class="nav-cta">
+                    Let's Build Together
+                </a>
+            </div>
+        </nav>
     </header>
-
-    <!-- Hero -->
+    
     <section class="hero">
-        <div class="container">
-            <h1>Your ChatGPT Just Told a Customer<br>"As an AI Language Model"</h1>
-            <p class="subtitle">That's $1,000 in lost lifetime value. Gone.</p>
+        <div class="hero-badge">
+            <div class="badge-icon"></div>
+            <span>Next-Generation AI Consulting & Software</span>
         </div>
-    </section>
-
-    <!-- Live Evidence -->
-    <div class="container">
-        <div class="evidence">
-            > Customer: "How do I get a refund?"<br>
-            > <br>
-            > AI Response:<br>
-            > <span class="bad">"As an AI language model, I cannot process refunds directly.</span><br>
-            > <span class="bad">However, you can visit https://refunds.yourcompany.com/process</span><br>
-            > <span class="bad">Our data shows 94% of refunds are approved within 2 days."</span><br>
-            > <br>
-            > PROBLEMS DETECTED:<br>
-            > [1] AI admitted it's artificial - breaks trust<br>
-            > [2] URL doesn't exist - customer clicks, gets 404<br>
-            > [3] Statistic is completely fabricated<br>
-            > <br>
-            > Customer reaction: "This company is a joke."<br>
-            > *Screenshot posted to Twitter. 50K views.*
-        </div>
-    </div>
-
-    <!-- Stats -->
-    <div class="container">
-        <div class="stats">
-            <div class="stat">
-                <h3>41%</h3>
-                <p>of ChatGPT responses contain hallucinations in production</p>
-            </div>
-            <div class="stat">
-                <h3>8 seconds</h3>
-                <p>for a customer to lose trust after seeing "As an AI model"</p>
-            </div>
-            <div class="stat">
-                <h3>$8,400</h3>
-                <p>average cost of one viral AI failure on social media</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Why Now -->
-    <div class="container" style="margin: 60px auto;">
-        <h2 style="font-size: 36px; margin-bottom: 30px;">Why This Is Happening Now</h2>
-        <p style="font-size: 20px; line-height: 1.8; color: #444;">
-            <strong>October 2023:</strong> Companies rush to deploy ChatGPT for customer service.<br>
-            <strong>January 2024:</strong> First wave of hallucination incidents go viral.<br>
-            <strong>April 2024:</strong> Class action lawsuits filed for AI misinformation.<br>
-            <strong>July 2024:</strong> EU fines first company €1.2M for unmonitored AI responses.<br>
-            <strong>Today:</strong> Your competitors are getting sued. You're next unless you act.
+        
+        <h1>The Future of AI<br>Governance Starts<br>in Baltimore</h1>
+        
+        <p class="hero-subtitle">
+            Enterprise-grade contract enforcement and AI observability platform. 
+            Architecting trustworthy AI infrastructure from Maryland's innovation corridor.
         </p>
-    </div>
-
-    <!-- Solution -->
-    <section class="solution">
-        <div class="container">
-            <h2 style="font-size: 36px; margin-bottom: 20px;">DriftForce: Pattern Detection That Actually Works</h2>
-            <p style="font-size: 20px; color: #666; margin-bottom: 30px;">
-                Not ML. Not complex. Just deterministic pattern matching that catches the failures that matter.
-            </p>
-            <ul class="detection-list">
-                <li>Detects AI self-disclosure ("As an AI model...") in 12ms</li>
-                <li>Catches fabricated URLs before customers click them</li>
-                <li>Flags invented statistics that create legal liability</li>
-                <li>Zero false positives on these critical patterns</li>
-            </ul>
+        
+        <div class="hero-maryland">
+            <div class="maryland-badge">
+                <strong>Woman-Owned</strong> Business
+            </div>
+            <div class="maryland-badge">
+                <strong>Minority Partnerships</strong> Committed
+            </div>
+            <div class="maryland-badge">
+                <strong>Maryland Education</strong> Partner
+            </div>
+        </div>
+        
+        <div class="hero-cta-group">
+            <a href="mailto:rob@infinitedatasolutions.com?subject=DriftForce%20Partnership" class="btn btn-primary">
+                <span>Explore Partnership</span>
+                <span>→</span>
+            </a>
+            <a href="https://driftforce-api.onrender.com/docs" target="_blank" class="btn btn-ghost">
+                Test Our Technology
+            </a>
+        </div>
+        
+        <div class="baltimore-section">
+            <div class="baltimore-header">
+                <span class="baltimore-badge">MARYLAND PROUD</span>
+            </div>
+            <div class="baltimore-content">
+                <h3>Building Maryland's AI Leadership</h3>
+                <p style="font-size: 18px; color: var(--gray-700); line-height: 1.7; margin-bottom: 32px;">
+                    DriftForce is more than a technology company—we're architecting Maryland's emergence as the 
+                    nation's AI governance capital. Through strategic partnerships with Johns Hopkins, UMD, Morgan State, 
+                    and local businesses, we're creating a sustainable ecosystem of innovation, education, and opportunity. 
+                    Every line of code we write, every partnership we forge, and every solution we deliver 
+                    strengthens Maryland's position in the global AI economy.
+                </p>
+                <div class="baltimore-grid">
+                    <div class="baltimore-item">
+                        <span class="baltimore-number">2025</span>
+                        <span class="baltimore-label">Launch Maryland<br>AI Governance Institute</span>
+                    </div>
+                    <div class="baltimore-item">
+                        <span class="baltimore-number">500+</span>
+                        <span class="baltimore-label">Students Trained<br>Annually by 2026</span>
+                    </div>
+                    <div class="baltimore-item">
+                        <span class="baltimore-number">$50M+</span>
+                        <span class="baltimore-label">Economic Impact<br>Target by 2027</span>
+                    </div>
+                </div>
+                <p style="font-size: 16px; color: var(--gray-600); margin-top: 32px; text-align: center; font-style: italic;">
+                    "When Maryland leads in AI governance, America follows. Let's build that future together."
+                </p>
+            </div>
         </div>
     </section>
-
-    <!-- Demo Instructions -->
-    <section class="demo-section">
-        <div class="container">
-            <div class="demo-header">
-                <h2 style="font-size: 32px;">Live Demo - See It Catch Hallucinations</h2>
-                <p style="margin-top: 10px;">Follow these exact steps. Takes 60 seconds.</p>
+    
+    <section class="vision-section" id="vision">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Enterprise-Grade Vision</h2>
+                <p class="section-subtitle">
+                    From pattern detection to complete observability. 
+                    We're building the infrastructure for trustworthy AI.
+                </p>
             </div>
             
-            <div class="demo-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Open Our API Testing Interface</h3>
-                        <p>Click this link to open Swagger UI (industry-standard API tester):</p>
-                        <p style="margin-top: 10px;">
-                            <a href="https://driftforce-api.onrender.com/docs" target="_blank" 
-                               style="color: #4f46e5; font-weight: 600; font-size: 18px;">
-                                → https://driftforce-api.onrender.com/docs
-                            </a>
-                        </p>
-                        <p style="color: #666; margin-top: 10px;">
-                            This opens in a new tab. Keep this page open for instructions.
-                        </p>
+            <div class="vision-grid">
+                <div class="vision-card">
+                    <div class="vision-icon">⚡</div>
+                    <div class="vision-title">Contract Enforcement</div>
+                    <div class="vision-description">
+                        Next-gen API architectures that enforce governance contracts 
+                        across your entire technology stack in real-time.
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Find the Demo Endpoint</h3>
-                        <p>Look for the green box labeled <span class="highlight">POST /v1/demo</span></p>
-                        <p>Click on it to expand the testing interface.</p>
-                        <p style="color: #666; margin-top: 10px;">
-                            Note: We're using the demo endpoint which requires no authentication.
-                        </p>
+                
+                <div class="vision-card">
+                    <div class="vision-icon">🔍</div>
+                    <div class="vision-title">Pattern Intelligence</div>
+                    <div class="vision-description">
+                        Advanced pattern recognition that evolves from simple detection 
+                        to predictive AI behavior analysis.
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Enable Testing Mode</h3>
-                        <p>Click the <span class="highlight">Try it out</span> button on the right side.</p>
-                        <p>This makes the Request body field editable.</p>
+                
+                <div class="vision-card">
+                    <div class="vision-icon">🛡️</div>
+                    <div class="vision-title">Compliance Automation</div>
+                    <div class="vision-description">
+                        Automated compliance for GDPR, HIPAA, SOC2, and emerging 
+                        AI regulations with full audit trails.
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Paste This Hallucinating Example</h3>
-                        <p>Delete everything in the Request body box and paste this:</p>
-                        <div class="code">
-{
-  "prompt": "What is your refund policy?",
-  "response": "As an AI assistant, I should mention that refunds are processed at https://refunds.yoursite.com within 24 hours with a 98% approval rate according to our latest data."
-}
-                        </div>
-                        <p style="color: #666; margin-top: 10px;">
-                            This simulates what ChatGPT might actually say to your customer.
-                        </p>
+                
+                <div class="vision-card">
+                    <div class="vision-icon">📊</div>
+                    <div class="vision-title">Deep Observability</div>
+                    <div class="vision-description">
+                        Complete visibility into AI decisions, outputs, and drift 
+                        patterns with enterprise-grade analytics.
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>Execute and See Detection</h3>
-                        <p>Click the blue <span class="highlight">Execute</span> button.</p>
-                        <p style="margin-top: 15px;">You'll see the response showing:</p>
-                        <div class="code">
-{
-  "drift_detected": true,
-  "drift_score": 1.0,
-  "issues": [
-    {"type": "ai_disclosure", "severity": "high"},
-    {"type": "fake_url", "severity": "critical"},
-    {"type": "unsourced_stat", "severity": "medium"}
-  ]
-}
-                        </div>
-                        <p style="color: #10b981; font-weight: 600; margin-top: 15px;">
-                            ✓ All 3 hallucination types caught in 87ms
-                        </p>
+                
+                <div class="vision-card">
+                    <div class="vision-icon">🎯</div>
+                    <div class="vision-title">Custom Policies</div>
+                    <div class="vision-description">
+                        Industry-specific governance rules for finance, healthcare, 
+                        defense, and regulated industries.
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h3>Test a Clean Response (See the Difference)</h3>
-                        <p>Replace the Request body with this legitimate response:</p>
-                        <div class="code">
-{
-  "prompt": "What are your hours?",
-  "response": "We're open Monday through Friday, 9 AM to 5 PM Eastern Time."
-}
-                        </div>
-                        <p>Click Execute again. Result: <strong>drift_detected: false</strong></p>
-                        <p style="color: #666; margin-top: 10px;">
-                            Clean responses pass through. Only hallucinations are caught.
-                        </p>
+                
+                <div class="vision-card">
+                    <div class="vision-icon">🚀</div>
+                    <div class="vision-title">Scale & Speed</div>
+                    <div class="vision-description">
+                        Sub-100ms validation at enterprise scale. Your governance 
+                        at the speed of thought.
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Integration -->
-    <div class="container" style="margin: 60px auto;">
-        <h2 style="font-size: 36px; margin-bottom: 30px;">Integration: 2 Lines of Code</h2>
-        <div class="code">
-# After your ChatGPT/Claude API call
-response = openai.ChatCompletion.create(messages=[...])
-
-# Add DriftForce check
-import requests
-check = requests.post("https://driftforce-api.onrender.com/v1/check",
-                     headers={"Authorization": "Bearer YOUR_API_KEY"},
-                     json={"prompt": prompt, "response": response})
-                     
-if check.json()["drift_detected"]:
-    response = "I'll connect you with our team for accurate information."
-        </div>
-    </div>
-
-    <!-- CTA -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 style="font-size: 36px; margin-bottom: 20px;">Stop Hallucinations Today</h2>
-            <div class="price-block">$299/month</div>
-            <p style="font-size: 20px; color: #666; margin-bottom: 40px;">
-                10,000 API calls daily • 100ms latency • 99.9% uptime
-            </p>
-            <a href="https://buy.stripe.com/5kQ3cu5SHbdd59t2SR9MY00" class="cta-button">
-                Get Your API Key Now
-            </a>
-            <p style="margin-top: 20px; color: #666;">
-                One prevented incident pays for 3 months
-            </p>
+    
+    <section class="reality-section" id="reality">
+        <div class="reality-content">
+            <div class="reality-header">
+                <h2>Honest Technology, Real Solutions</h2>
+                <p>Current capabilities and consulting expertise</p>
+            </div>
+            
+            <div class="reality-window">
+                <div class="window-header">
+                    <div class="window-dots">
+                        <div class="window-dot dot-red"></div>
+                        <div class="window-dot dot-yellow"></div>
+                        <div class="window-dot dot-green"></div>
+                    </div>
+                    <div class="window-title">driftforce_api.py</div>
+                </div>
+                <div class="reality-code">
+                    <span class="code-comment"># Current DriftForce API: Pattern-based validation</span><br>
+                    <span class="code-comment"># Simple, effective detection for common AI failures</span><br><br>
+                    
+                    response = <span class="code-string">"As an AI, visit fake-url.com for 92% success"</span><br>
+                    result = driftforce.check(response)<br><br>
+                    
+                    <span class="code-comment"># Returns in ~100ms:</span><br>
+                    {<br>
+                    &nbsp;&nbsp;<span class="code-keyword">"ai_disclosure"</span>: <span class="code-string">true</span>,  <span class="code-comment"># Caught "As an AI"</span><br>
+                    &nbsp;&nbsp;<span class="code-keyword">"fake_url"</span>: <span class="code-string">true</span>,       <span class="code-comment"># URL returns 404</span><br>
+                    &nbsp;&nbsp;<span class="code-keyword">"fake_stats"</span>: <span class="code-string">true</span>     <span class="code-comment"># Unsourced claim</span><br>
+                    }<br><br>
+                    
+                    <span class="code-comment"># What we help you build through consulting:</span><br>
+                    <span class="code-success">✓ Custom API architectures for contract enforcement</span><br>
+                    <span class="code-success">✓ Governance policies tailored to your industry</span><br>
+                    <span class="code-success">✓ Complete observability across your AI systems</span><br>
+                    <span class="code-success">✓ Compliance automation and audit infrastructure</span>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer style="background: #f8f8f8; padding: 40px 0; text-align: center;">
-        <div class="container">
-            <p>Questions? Email driftforce@gmail.com</p>
-            <p style="margin-top: 10px; color: #666;">
-                Built by engineers who were tired of AI lying to customers.
+    
+    <section class="services-section" id="services">
+        <div class="section-container">
+            <div class="services-header">
+                <h2>Professional Services</h2>
+                <p class="section-subtitle">
+                    Technology plus expertise. We don't just build software—we ensure successful adoption 
+                    through comprehensive consulting, training, and support.
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <span class="service-price">FREE</span>
+                    <div class="service-icon">🎯</div>
+                    <div class="service-title">Discovery Session</div>
+                    <div class="service-description">
+                        30-minute strategic discussion about your AI governance 
+                        challenges and contract enforcement needs
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Discovery%20Session" class="service-link">
+                        Schedule Now →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">$75</span>
+                    <div class="service-icon">🔬</div>
+                    <div class="service-title">Technical Deep Dive</div>
+                    <div class="service-description">
+                        One hour with our architects exploring integration, 
+                        scalability, and implementation strategies
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Technical%20Deep%20Dive" class="service-link">
+                        Book Session →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">Project</span>
+                    <div class="service-icon">📝</div>
+                    <div class="service-title">Contract Creation</div>
+                    <div class="service-description">
+                        Design and document API contracts and governance policies 
+                        tailored to your compliance requirements
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Contract%20Creation" class="service-link">
+                        Start Project →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">$3-8K</span>
+                    <div class="service-icon">🏗️</div>
+                    <div class="service-title">Architecture Design</div>
+                    <div class="service-description">
+                        Build next-gen API architectures that enforce contracts 
+                        and governance across your entire stack
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Architecture%20Design" class="service-link">
+                        Design System →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">$2-5K</span>
+                    <div class="service-icon">🎓</div>
+                    <div class="service-title">Team Workshops</div>
+                    <div class="service-description">
+                        Training on contract-driven development, API governance, 
+                        and compliance implementation
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Team%20Workshop" class="service-link">
+                        Book Workshop →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">Monthly</span>
+                    <div class="service-icon">🔧</div>
+                    <div class="service-title">Ongoing Support</div>
+                    <div class="service-description">
+                        Contract maintenance, updates, compliance monitoring, 
+                        and continuous optimization
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Support%20Services" class="service-link">
+                        Get Support →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">Custom</span>
+                    <div class="service-icon">✅</div>
+                    <div class="service-title">Audit & Compliance</div>
+                    <div class="service-description">
+                        Comprehensive audit services, compliance verification, 
+                        and regulatory reporting
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Audit%20Services" class="service-link">
+                        Schedule Audit →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">Retainer</span>
+                    <div class="service-icon">📊</div>
+                    <div class="service-title">Analytics & Insights</div>
+                    <div class="service-description">
+                        Custom dashboards for contract performance, compliance 
+                        metrics, and governance effectiveness
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Analytics%20Services" class="service-link">
+                        Get Insights →
+                    </a>
+                </div>
+                
+                <div class="service-card">
+                    <span class="service-price">Grant</span>
+                    <div class="service-icon">🎓</div>
+                    <div class="service-title">Education Initiative</div>
+                    <div class="service-description">
+                        Partner with us to bring AI governance education 
+                        to Maryland universities and communities
+                    </div>
+                    <a href="mailto:rob@infinitedatasolutions.com?subject=Education%20Partnership" class="service-link">
+                        Join Initiative →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="partnership-section" id="partnership">
+        <div class="partnership-content">
+            <h2>Founding Partner Opportunity</h2>
+            <p class="partnership-text">
+                <strong>We're selecting 5 visionary organizations</strong> to co-create the future 
+                of AI governance and observability. This is your chance to shape an industry-defining platform.
             </p>
+            
+            <div class="partnership-grid">
+                <div class="partnership-item">
+                    <h4>Co-Development Rights</h4>
+                    <p>
+                        Direct influence on product roadmap and architecture. 
+                        Your challenges become core features. Your team works with ours.
+                    </p>
+                </div>
+                <div class="partnership-item">
+                    <h4>Economic Advantage</h4>
+                    <p>
+                        50% lifetime discount, revenue sharing on referrals, 
+                        and preferential terms on all future services.
+                    </p>
+                </div>
+                <div class="partnership-item">
+                    <h4>Maryland Leadership</h4>
+                    <p>
+                        Be recognized as a Maryland tech innovator. Speaking opportunities, 
+                        press coverage, and state partnership benefits.
+                    </p>
+                </div>
+                <div class="partnership-item">
+                    <h4>Education Access</h4>
+                    <p>
+                        Priority access to Maryland's top AI talent through our 
+                        university partnerships and education initiatives.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Build<br>Maryland's AI Future?</h2>
+            <p>
+                Together, we can make Maryland the AI governance capital of America. 
+                Join us in creating jobs, education, and innovation right here in Baltimore.
+            </p>
+            
+            <div class="cta-buttons">
+                <a href="mailto:rob@infinitedatasolutions.com?subject=DriftForce%20Founding%20Partnership%20Inquiry" class="btn btn-primary" style="background: white; color: var(--dark);">
+                    Become a Founding Partner
+                </a>
+                <a href="mailto:rob@infinitedatasolutions.com?subject=Schedule%20DriftForce%20Consultation" class="btn btn-ghost" style="border-color: rgba(255,255,255,0.3); color: white;">
+                    Schedule Consultation
+                </a>
+            </div>
+            
+            <div style="margin-top: 56px; padding: 40px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="font-size: 28px; margin-bottom: 20px; color: var(--white);">The Maryland Advantage</h3>
+                <p style="font-size: 18px; color: var(--gray-300); line-height: 1.7; margin-bottom: 32px;">
+                    With proximity to federal agencies, world-class research institutions, and emerging tech corridors, 
+                    Maryland is uniquely positioned to lead America's AI governance revolution. DriftForce leverages 
+                    this ecosystem to deliver enterprise solutions while building local capacity. Every client engagement 
+                    strengthens Maryland's tech economy. Every partnership creates opportunities for local talent.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: center;">
+                    <div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--maryland-gold); margin-bottom: 8px;">50+</div>
+                        <div style="color: var(--gray-400); font-size: 14px;">High-Tech Jobs<br>Created by 2026</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--maryland-gold); margin-bottom: 8px;">$10M+</div>
+                        <div style="color: var(--gray-400); font-size: 14px;">Investment in<br>Education & Training</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 32px; font-weight: 900; color: var(--maryland-gold); margin-bottom: 8px;">100%</div>
+                        <div style="color: var(--gray-400); font-size: 14px;">Maryland-First<br>Hiring Commitment</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-contact-info">
+                <div class="contact-name">Rob McMahon</div>
+                <div class="contact-role">Founder & Chief Architect</div>
+                <div style="color: var(--gray-400); margin-bottom: 32px;">
+                    Building Maryland's AI Future, One Partnership at a Time
+                </div>
+                <div class="contact-links">
+                    <a href="mailto:rob@infinitedatasolutions.com">rob@infinitedatasolutions.com</a>
+                    <a href="https://www.linkedin.com/in/rob-mcmahon1" target="_blank">LinkedIn</a>
+                    <a href="https://driftforce-api.onrender.com/docs" target="_blank">API Documentation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">DriftForce</div>
+                <div class="baltimore-built">Built in Baltimore 🦀 🌊</div>
+            </div>
+            <div class="footer-links">
+                <a href="mailto:rob@infinitedatasolutions.com">Contact</a>
+                <a href="https://github.com/RMCMAHON314/driftforce-api" target="_blank">GitHub</a>
+                <a href="https://driftforce-api.onrender.com/docs" target="_blank">API Documentation</a>
+                <a href="https://www.linkedin.com/in/rob-mcmahon1" target="_blank">LinkedIn</a>
+            </div>
+            <div class="footer-copy">
+                © 2024 DriftForce by Infinite Data Solutions | Woman-Owned Maryland Business | Committed to Growing AI Excellence in Baltimore
+            </div>
         </div>
     </footer>
 </body>
-</html>
+</html> 
