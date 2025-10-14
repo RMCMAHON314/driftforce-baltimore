@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DriftForce - Stop AI Hallucinations</title>
+    <style>
+        body { font-family: -apple-system, Arial; max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+        .hero { text-align: center; padding: 60px 0; }
+        h1 { font-size: 48px; margin: 0; }
+        .price { font-size: 36px; color: #10b981; margin: 30px 0; }
+        pre { background: #f3f4f6; padding: 20px; border-radius: 8px; overflow-x: auto; }
+        .cta { display: inline-block; background: #3b82f6; color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-size: 18px; }
+        .demo { background: #f3f4f6; padding: 30px; border-radius: 8px; margin: 40px 0; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Your AI is Lying to Customers</h1>
+        <p style="font-size: 24px; color: #666;">Catch hallucinations before they see them</p>
+        <div class="price">$299/month</div>
+        <a href="#buy" class="cta">Start Now</a>
+    </div>
+    
+    <div class="demo">
+        <h2>Try it Live</h2>
+        <pre>
+curl -X POST "https://driftforce-api.onrender.com/v1/check" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "What?", "response": "As an AI, visit https://fake.com"}'
+        </pre>
+        <p>Response: ✅ Hallucination detected (3 issues found)</p>
+    </div>
+    
+    <div id="buy" class="demo">
+        <h2>Get Your API Key</h2>
+        <p>Email: driftforce@gmail.com</p>
+        <p>Include your company name and we'll send:</p>
+        <ul>
+            <li>Your API key</li>
+            <li>Integration guide (2 lines of code)</li>
+            <li>Stripe payment link</li>
+        </ul>
+    </div>
+</body>
+</html>
