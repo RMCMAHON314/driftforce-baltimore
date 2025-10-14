@@ -1,0 +1,12 @@
+DRIFTFORCE CUSTOMERS
+====================
+Payment Link: https://buy.stripe.com/5kQ3cu5SHbdd59t2SR9MY00
+
+CUSTOMER TEMPLATE:
+------------------
+Company: 
+Email: 
+Paid: ☐
+API Key: df_live_
+Status: Active
+------------------
