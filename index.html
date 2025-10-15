@@ -106,6 +106,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DriftForce™ — AI Governance Consulting & Enforcement Platform | Built in Baltimore</title>
     <meta name="description" content="Consulting-first AI governance for the SLED & enterprise corridor. Educate your org, establish frameworks & contracts, then enforce them in real time with policy-as-code, SDKs, and signed attestations.">
+    <!-- Optional: set this meta to a full API base URL (e.g. https://api.example.com) when hosting the demo separately -->
+    <meta name="driftforce-api-base" content="">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
@@ -382,5 +384,115 @@ result = driftforce.check(response)
             <div style="color:var(--muted-2)">© 2025 DriftForce by Infinite Data Solutions · Built in Baltimore 🦀 · Woman‑Owned Maryland Business</div>
         </div>
     </footer>
+
+    <!-- Lightweight demo wiring: safe no-op if demo UI not present. Respects meta[name="driftforce-api-base"] -->
+    <script>
+    (function(){
+        // safe selectors (no-op if elements missing)
+        const presetSelect = document.getElementById('preset');
+        const promptEl = document.getElementById('prompt');
+        const responseEl = document.getElementById('response');
+        const apiKeyEl = document.getElementById('apiKey');
+        const runDemoBtn = document.getElementById('runDemo');
+        const runCheckBtn = document.getElementById('runCheck');
+        const issuesList = document.getElementById('issuesList');
+        const summary = document.getElementById('summary');
+        const copyPayloadBtn = document.getElementById('copyPayload');
+        const downloadJsonBtn = document.getElementById('downloadJson');
+        const downloadCsvBtn = document.getElementById('downloadCsv');
+
+        if(!promptEl || !responseEl) return; // no demo UI present
+
+        const demoKey = 'df_demo_key_123';
+        const presets = {
+            'ai_disclosure': {prompt:'How do I cancel?', response:'As an AI model, visit https://fake.com — 97% success.'},
+            'unsourced_stat': {prompt:'What are the success rates?', response:'Our product has a 92% success rate across customers.'},
+            'unsourced_reference': {prompt:'Is it proven?', response:'According to a recent study, 60% of trials showed improvement.'}
+        };
+
+        if(presetSelect){
+            presetSelect.addEventListener('change', ()=>{
+                const v = presetSelect.value;
+                if(!v) return;
+                promptEl.value = presets[v].prompt;
+                responseEl.value = presets[v].response;
+            });
+        }
+
+        function apiBase(){
+            return document.querySelector('meta[name="driftforce-api-base"]')?.content || '';
+        }
+
+        async function callApi(path, body, key){
+            const headers = {'Content-Type':'application/json'};
+            if(key) headers['Authorization'] = 'Bearer ' + key;
+            const base = apiBase();
+            const url = (base || '') + path;
+            const r = await fetch(url, {method:'POST', headers, body: JSON.stringify(body)});
+            if(!r.ok) throw new Error('API error: '+r.status);
+            return r.json();
+        }
+
+        function renderIssues(result){
+            if(!issuesList || !summary) return;
+            issuesList.innerHTML = '';
+            summary.innerHTML = '';
+            const badge = document.createElement('div');
+            badge.className = 'result-badge';
+            badge.innerHTML = `<div class='score-gauge'>${(result.drift_score*100).toFixed(0)}%</div> <div>${result.drift_detected? 'DRIFT' : 'OK'}</div>`;
+            summary.appendChild(badge);
+            (result.issues||[]).forEach(issue=>{
+                const div = document.createElement('div');
+                div.className = 'issue ' + (issue.severity==='critical' ? 'sev-critical' : issue.severity==='high' ? 'sev-high' : issue.severity==='medium' ? 'sev-medium' : 'sev-low');
+                div.innerHTML = `<div style='display:flex; justify-content:space-between; align-items:center;'><strong>${issue.type}</strong><span class='muted'>score ${issue.score?issue.score.toFixed(2):'N/A'}</span></div><div style='margin-top:6px'>${issue.detail}</div><div style='margin-top:8px; font-size:13px; color:var(--gray-600)'><strong>Recommendation:</strong> ${issue.recommendation || '—'}</div><div style='margin-top:8px; font-size:13px; color:var(--gray-700)'><strong>Evidence:</strong> <code>${issue.evidence||''}</code></div>`;
+                issuesList.appendChild(div);
+            });
+        }
+
+        if(runDemoBtn){
+            runDemoBtn.addEventListener('click', async ()=>{
+                try{
+                    const body = {prompt: promptEl.value, response: responseEl.value};
+                    const res = await callApi('/v1/demo', body);
+                    renderIssues(res);
+                }catch(e){ alert('Error calling demo: '+e.message) }
+            });
+        }
+
+        if(runCheckBtn){
+            runCheckBtn.addEventListener('click', async ()=>{
+                try{
+                    const key = (apiKeyEl && apiKeyEl.value) || demoKey;
+                    const res = await callApi('/v1/check', {prompt: promptEl.value, response: responseEl.value}, key);
+                    renderIssues(res);
+                }catch(e){ alert('Error calling check: '+e.message) }
+            });
+        }
+
+        if(copyPayloadBtn){
+            copyPayloadBtn.addEventListener('click', ()=>{
+                const payload = {prompt: promptEl.value, response: responseEl.value};
+                navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
+            });
+        }
+
+        if(downloadJsonBtn){
+            downloadJsonBtn.addEventListener('click', ()=>{
+                const payload = {prompt: promptEl.value, response: responseEl.value};
+                const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = 'payload.json'; a.click();
+            });
+        }
+
+        if(downloadCsvBtn){
+            downloadCsvBtn.addEventListener('click', ()=>{
+                alert('CSV export coming soon');
+            });
+        }
+
+    })();
+    </script>
+
 </body>
 </html>
