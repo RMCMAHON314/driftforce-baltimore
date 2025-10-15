@@ -36,110 +36,274 @@
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>DriftForce — Demo</h1>
-      <p class="muted">An embedded demo of the drift/hallucination detector. Use the demo key or paste your own API key.</p>
-    </header>
+  <!-- Header -->
+  <header>
+    <div class="wrap">
+      <nav>
+        <a class="brand" href="#top" aria-label="DriftForce home"><div class="mark">DF</div><span>DriftForce</span></a>
+        <div class="navlinks" role="navigation">
+          <a href="#vision">Vision</a>
+          <a href="#technology">Technology</a>
+          <a href="#services">Services</a>
+          <a href="#partnership">Partnership</a>
+        </div>
+        <div class="navcta">
+          <a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Consultation">Schedule Consultation</a>
+          <a class="btn btn-blue" target="_blank" href="https://driftforce-api.onrender.com/docs">API Docs</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-    <section class="marquee" aria-hidden="true">
-      <div class="track" role="presentation">
-        <div class="pill">Snowflake</div>
-        <div class="pill">Databricks</div>
-        <div class="pill">dbt</div>
-        <div class="pill">Fivetran</div>
-        <div class="pill">Sigstore</div>
-        <div class="pill">NIST RMF</div>
-        <div class="pill">EU AI Act</div>
-        <div class="pill">Snowflake</div>
-        <div class="pill">Databricks</div>
-      </div>
-    </section>
-
-    <section id="demo">
-      <h2>Try the DriftForce Detector</h2>
-      <p class="muted">Paste a prompt and the model's response and click <strong>Run Demo</strong>.</p>
-      <select id="preset" style="margin-bottom:8px">
-        <option value="">— select a preset —</option>
-        <option value="ai_disclosure">AI self-disclosure + fake URL</option>
-        <option value="unsourced_stat">Unsourced statistics</option>
-        <option value="unsourced_reference">Unsourced reference</option>
-      </select>
-      <textarea id="prompt" rows="3" placeholder="Prompt (what you asked)" style="margin-top:8px"></textarea>
-      <textarea id="response" rows="4" placeholder="Model response (what it replied)" style="margin-top:8px"></textarea>
-      <input id="apiKey" placeholder="Optional API key (leave empty to use demo)" style="margin-top:8px" />
-
-      <div style="margin-top:12px">
-        <button id="runDemo" class="btn">Run Demo</button>
-        <button id="runCheck" class="btn btn-outline">Run Check (with API key)</button>
-        <button id="copyPayload" class="btn">Copy Payload</button>
-        <button id="downloadJson" class="btn">Download JSON</button>
-        <button id="downloadCsv" class="btn">Export CSV</button>
+  <!-- HERO -->
+  <section id="top" class="hero section">
+    <div class="wrap">
+      <span class="badge"><span class="dot"></span> NEXT‑GEN AI CONSULTING & SOFTWARE • MARYLAND PROUD</span>
+      <h1 style="margin-top:14px">The Future of AI Governance <br/>Starts in <span style="color:var(--gold)">Baltimore</span></h1>
+      <p style="max-width:760px;margin-top:10px">We educate, architect, and enforce. DriftForce turns policy into software with contract enforcement, LLM observability, and signed attestations — built for SLED & enterprise, born in Maryland.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <a class="btn btn-primary btn-lg" href="mailto:rob@infinitedatasolutions.com?subject=Partnership">Explore Partnership →</a>
+        <a class="btn btn-outline btn-lg" target="_blank" href="https://driftforce-api.onrender.com/docs">Test Our Technology</a>
       </div>
 
-      <div id="summary" style="margin-top:12px"></div>
-      <div id="issuesList" style="margin-top:10px"></div>
-    </section>
-
-    <section>
-      <h2>Services</h2>
-      <div class="service-card">
-        <strong>Technical Deep Dive — $75</strong>
-        <p class="muted">One hour with our architects exploring integration, scalability, and implementation strategies</p>
+      <!-- DEMO: Embedded interactive demo panel (minimal & non-intrusive) -->
+      <div id="driftforce-demo" style="margin-top:22px;display:block;max-width:820px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--border);padding:16px;border-radius:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <strong style="font-family:Space Grotesk,system-ui">Live Demo — Drift Detection</strong>
+          <small style="color:var(--muted);font-weight:700">Demo mode (no account required)</small>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px">
+          <div>
+            <label style="display:block;font-weight:800;margin-bottom:6px">Prompt (optional)</label>
+            <textarea id="demo-prompt" rows="4" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)">"How do I cancel my subscription?"</textarea>
+            <label style="display:block;font-weight:800;margin:10px 0 6px">Model Response</label>
+            <textarea id="demo-response" rows="4" style="width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)">As an AI assistant, visit https://fake-example.com for a 92% success rate.</textarea>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label style="font-weight:800">API Base (optional)</label>
+            <input id="demo-api" placeholder="leave blank to use demo endpoint" style="padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)" />
+            <button id="demo-run" class="btn btn-blue" style="margin-top:8px">Run Demo</button>
+            <button id="demo-check" class="btn btn-outline">Run Auth'd Check (requires key)</button>
+            <button id="demo-csv" class="btn btn-outline">Download CSV</button>
+            <div id="demo-summary" style="margin-top:10px;padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);min-height:64px;color:var(--muted)">Results will appear here.</div>
+          </div>
+        </div>
+        <div id="demo-issues" style="margin-top:12px;color:var(--muted)"></div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer style="margin-top:30px; font-size:13px;color:var(--muted)">
-      © 2025 DriftForce — Demo
-    </footer>
-  </div>
+  <!-- TRUST MARQUEE -->
+  <section class="marquee">
+    <div class="wrap">
+      <div class="track" aria-hidden="true">
+        <div class="pill">🧊 Snowflake</div>
+        <div class="pill">🔥 Databricks</div>
+        <div class="pill">🧱 dbt</div>
+        <div class="pill">🔗 Fivetran</div>
+        <div class="pill">🔒 OPA</div>
+        <div class="pill">🧾 Sigstore</div>
+        <div class="pill">📜 NIST RMF</div>
+        <div class="pill">🇪🇺 EU AI Act</div>
+        <div class="pill">🧊 Snowflake</div>
+        <div class="pill">🔥 Databricks</div>
+        <div class="pill">🧱 dbt</div>
+        <div class="pill">🔗 Fivetran</div>
+        <div class="pill">🔒 OPA</div>
+        <div class="pill">🧾 Sigstore</div>
+        <div class="pill">📜 NIST RMF</div>
+        <div class="pill">🇪🇺 EU AI Act</div>
+      </div>
+    </div>
+  </section>
 
+  <!-- VISION / VALUE -->
+  <section id="vision" class="section">
+    <div class="wrap grid-2">
+      <div class="panel">
+        <h2>Educate → Establish → Enforce</h2>
+        <p class="sub" style="margin-top:6px">Consulting‑first. We upskill executives and teams, author the policies and contracts, then implement automation that enforces those obligations in real time.</p>
+        <div class="list" style="margin-top:10px">
+          <div class="li"><div class="tick">1</div><div><strong>Educate:</strong> Executive briefings, workshops, tabletop exercises, and maturity assessments.</div></div>
+          <div class="li"><div class="tick">2</div><div><strong>Establish:</strong> Governance frameworks mapped to NIST, SOC2, HIPAA, and the EU AI Act; procurement guardrails; vendor standards.</div></div>
+          <div class="li"><div class="tick">3</div><div><strong>Enforce:</strong> Policy‑as‑Code, gateway sidecars, and signed attestations integrated with CI/CD and data stacks.</div></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-blue" href="#services">See Services</a>
+          <a class="btn btn-outline" href="#technology">How It Works</a>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Honest Technology, Real Solutions</h2>
+<pre style="background:#0b1020;color:#e5e7eb;border:1px solid #1f2a44;border-radius:12px;padding:16px;overflow:auto;font:14px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;margin-top:10px"># Current DriftForce API: Pattern-based validation (100ms typical)
+response = "As an AI, visit fake-url.com for 92% success"
+result = driftforce.check(response)
+
+# → returns
+{
+  "ai_disclosure": true,
+  "fake_url": true,
+  "fake_stats": true
+}
+
+# What we build with you through consulting
+✓ Contract enforcement APIs & gateways
+✓ Controls mapped to your frameworks
+✓ LLM observability & attestations
+</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECHNOLOGY / FEATURES -->
+  <section id="technology" class="section" style="background:var(--surface-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="wrap">
+      <div style="text-align:center;margin-bottom:24px">
+        <h2>Capabilities that Move Boards & Unblock Builders</h2>
+        <p class="sub" style="max-width:760px;margin:6px auto 0">From procurement to prod, DriftForce declares what is allowed, shows what is happening, and proves it cryptographically.</p>
+      </div>
+      <div class="featgrid">
+        <div class="feat"><span class="tag">Governance</span><h3>Policy Registry</h3><p>Map legal text to enforceable controls. Versioned, diff‑able, and traceable to NIST RMF & EU AI Act.</p></div>
+        <div class="feat"><span class="tag">Runtime</span><h3>Enforcement SDKs</h3><p>Guardrails in gateways and apps. Block, warn, or auto‑sanitize with configurable actions.</p></div>
+        <div class="feat"><span class="tag">Evidence</span><h3>Signed Attestations</h3><p>Every decision emits tamper‑evident evidence (Sigstore). Export to auditors & customers.</p></div>
+        <div class="feat"><span class="tag">Risk</span><h3>Drift Detection</h3><p>Model & schema drift tracking; trigger retraining or rollbacks automatically.</p></div>
+        <div class="feat"><span class="tag">Privacy</span><h3>PII & Toxicity Filters</h3><p>Inline redaction & toxicity scoring to keep content safe without slowing teams.</p></div>
+        <div class="feat"><span class="tag">Observability</span><h3>LLM Traces</h3><p>Prompt templates, latencies, costs, providers, and policy outcomes — in one pane.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES / PRICING -->
+  <section id="services" class="section">
+    <div class="wrap">
+      <div style="text-align:center;margin-bottom:24px">
+        <h2>Professional Services</h2>
+        <p class="sub">Technology plus expertise. We ensure successful adoption through consulting, training, and support.</p>
+      </div>
+      <div class="featgrid">
+        <div class="feat"><h3>FREE · 🎯 Discovery Session</h3><p>30‑minute strategic discussion on governance & enforcement needs.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Discovery%20Session">Schedule Now →</a></div>
+        <div class="feat"><h3>$75 · 🔬 Technical Deep Dive</h3><p>One hour with architects covering integration & scalability.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Technical%20Deep%20Dive">Book Session →</a></div>
+        <div class="feat"><h3>Project · 📝 Contract Creation</h3><p>Design API contracts & governance policies tailored to compliance.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Contract%20Creation">Start Project →</a></div>
+        <div class="feat"><h3>$3‑8K · 🏗️ Architecture Design</h3><p>Build next‑gen API architectures that enforce contracts in real time.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Architecture%20Design">Design System →</a></div>
+        <div class="feat"><h3>$2‑5K · 🎓 Team Workshops</h3><p>Training on contract‑driven development & controls as code.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Team%20Workshops">Book Workshop →</a></div>
+        <div class="feat"><h3>Monthly · 🔧 Ongoing Support</h3><p>Contract maintenance, updates, monitoring, and optimization.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Ongoing%20Support">Get Support →</a></div>
+        <div class="feat"><h3>Custom · ✅ Audit & Compliance</h3><p>Comprehensive audits, verification, and regulatory reporting.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Audit%20%26%20Compliance">Schedule Audit →</a></div>
+        <div class="feat"><h3>Retainer · 📊 Analytics & Insights</h3><p>Dashboards for contract performance & compliance metrics.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Analytics%20%26%20Insights">Get Insights →</a></div>
+        <div class="feat"><h3>Grant · 🎓 Education Initiative</h3><p>Partner to bring AI governance education to MD universities.</p><a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com?subject=Education%20Initiative">Join Initiative →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERSHIP CTA -->
+  <section id="partnership" class="cta section">
+    <div class="wrap">
+      <h2>Founding Partner Opportunity</h2>
+      <p class="sub" style="max-width:760px;margin:8px auto 0">We’re selecting 5 visionary organizations to co‑create the future of AI governance and observability — with co‑development rights, preferential economics, and Maryland leadership opportunities.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px">
+        <a class="btn btn-primary btn-lg" href="mailto:rob@infinitedatasolutions.com?subject=Founding%20Partner">Become a Founding Partner</a>
+        <a class="btn btn-outline btn-lg" href="mailto:rob@infinitedatasolutions.com?subject=Schedule%20Consultation">Schedule Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARYLAND ADVANTAGE -->
+  <section class="section" style="background:var(--surface-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="wrap">
+      <div style="text-align:center;margin-bottom:24px">
+        <h2>The Maryland Advantage</h2>
+        <p class="sub">Proximity to federal agencies. World‑class research. An ascendant tech corridor. Every engagement strengthens Maryland’s economy and talent pipeline.</p>
+      </div>
+      <div class="featgrid">
+        <div class="feat"><h3>50+ High‑Tech Jobs</h3><p>Created by 2026 through projects, programs, and partnerships.</p></div>
+        <div class="feat"><h3>$10M+ Education Investment</h3><p>Direct funding for training & upskilling across MD institutions.</p></div>
+        <div class="feat"><h3>100% MD‑First Hiring</h3><p>Commitment to building with Maryland talent and partners.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="section">
+    <div class="wrap foot">
+      <div style="display:flex;gap:10px;justify-content:center;align-items:center"><div class="mark">DF</div><strong>DriftForce</strong></div>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a class="btn btn-outline" href="mailto:rob@infinitedatasolutions.com">Email</a>
+        <a class="btn btn-outline" target="_blank" href="https://www.linkedin.com/in/rob-mcmahon1">LinkedIn</a>
+        <a class="btn btn-outline" target="_blank" href="https://github.com/RMCMAHON314/driftforce-api">GitHub</a>
+        <a class="btn btn-outline" target="_blank" href="https://driftforce-api.onrender.com/docs">API Docs</a>
+      </div>
+      <div style="color:var(--muted-2)">© 2025 DriftForce by Infinite Data Solutions · Built in Baltimore 🦀 · Woman‑Owned Maryland Business</div>
+    </div>
+  </footer>
+
+  <!-- DEMO WIRING (minimal, non-intrusive) -->
   <script>
   (function(){
-    const presetSelect = document.getElementById('preset');
-    const promptEl = document.getElementById('prompt');
-    const responseEl = document.getElementById('response');
-    const apiKeyEl = document.getElementById('apiKey');
-    const runDemoBtn = document.getElementById('runDemo');
-    const runCheckBtn = document.getElementById('runCheck');
-    const issuesList = document.getElementById('issuesList');
-    const summary = document.getElementById('summary');
-    const copyPayloadBtn = document.getElementById('copyPayload');
-    const downloadJsonBtn = document.getElementById('downloadJson');
-    const downloadCsvBtn = document.getElementById('downloadCsv');
+    // DOM refs
+    const promptEl = document.getElementById('demo-prompt');
+    const responseEl = document.getElementById('demo-response');
+    const apiBaseInput = document.getElementById('demo-api');
+    const runBtn = document.getElementById('demo-run');
+    const checkBtn = document.getElementById('demo-check');
+    const csvBtn = document.getElementById('demo-csv');
+    const summary = document.getElementById('demo-summary');
+    const issues = document.getElementById('demo-issues');
 
     const demoKey = 'df_demo_key_123';
-    const presets = {
-      'ai_disclosure': {prompt:'How do I cancel?', response:'As an AI model, visit https://fake.com — 97% success.'},
-      'unsourced_stat': {prompt:'What are the success rates?', response:'Our product has a 92% success rate across customers.'},
-      'unsourced_reference': {prompt:'Is it proven?', response:'According to a recent study, 60% of trials showed improvement.'}
-    };
 
-    if(presetSelect){
-      presetSelect.addEventListener('change', ()=>{
-        const v = presetSelect.value; if(!v) return; promptEl.value = presets[v].prompt; responseEl.value = presets[v].response;
-      });
+    function effectiveBase(){
+      // priority: input value -> meta tag -> empty (relative)
+      const meta = document.querySelector('meta[name="driftforce-api-base"]')?.content || '';
+      return (apiBaseInput && apiBaseInput.value)? apiBaseInput.value.trim() : meta || '';
     }
 
-    function apiBase(){return document.querySelector('meta[name="driftforce-api-base"]')?.content || ''}
-
-    async function callApi(path, body, key){
-      const headers = {'Content-Type':'application/json'}; if(key) headers['Authorization'] = 'Bearer ' + key;
-      const base = apiBase(); const url = (base || '') + path; const r = await fetch(url, {method:'POST', headers, body: JSON.stringify(body)});
-      if(!r.ok) throw new Error('API error: '+r.status); return r.json();
+    async function postJson(path, body, key){
+      const base = effectiveBase();
+      const url = (base? base.replace(/\/$/, '') : '') + path;
+      const headers = {'Content-Type':'application/json'}; if(key) headers['Authorization']='Bearer '+key;
+      const res = await fetch(url, {method:'POST', headers, body:JSON.stringify(body)});
+      if(!res.ok) throw new Error('API error: '+res.status);
+      return res.json();
     }
 
-    function renderIssues(result){
-      issuesList.innerHTML = ''; summary.innerHTML = '';
-      const badge = document.createElement('div'); badge.className='result-badge'; badge.innerHTML = `<div style="font-weight:800">${(result.drift_score*100).toFixed(0)}%</div><div>${result.drift_detected? 'DRIFT':'OK'}</div>`; summary.appendChild(badge);
-      (result.issues||[]).forEach(issue=>{ const d = document.createElement('div'); d.className='issue'; d.innerHTML = `<strong>${issue.type}</strong><div style="color:var(--muted)">${issue.detail}</div>`; issuesList.appendChild(d) })
+    function renderResult(r){
+      summary.innerText = r.drift_detected? 'DRIFT DETECTED — score: '+r.drift_score.toFixed(2) : 'No drift detected — score: '+r.drift_score.toFixed(2);
+      issues.innerHTML = '';
+      (r.issues||[]).forEach(i=>{ const d=document.createElement('div'); d.style.marginTop='8px'; d.innerHTML = `<strong>${i.type}</strong>: <span style="color:var(--muted)">${i.detail}</span>`; issues.appendChild(d); });
     }
 
-    if(runDemoBtn){ runDemoBtn.addEventListener('click', async ()=>{ try{ const body={prompt:promptEl.value,response:responseEl.value}; const res=await callApi('/v1/demo', body); renderIssues(res) }catch(e){alert('Error: '+e.message)} }) }
-    if(runCheckBtn){ runCheckBtn.addEventListener('click', async ()=>{ try{ const key=(apiKeyEl&&apiKeyEl.value)||demoKey; const res=await callApi('/v1/check',{prompt:promptEl.value,response:responseEl.value}, key); renderIssues(res) }catch(e){alert('Error: '+e.message)} }) }
-    if(copyPayloadBtn){ copyPayloadBtn.addEventListener('click', ()=>{ navigator.clipboard?.writeText(JSON.stringify({prompt:promptEl.value,response:responseEl.value},null,2)) }) }
-    if(downloadJsonBtn){ downloadJsonBtn.addEventListener('click', ()=>{ const blob=new Blob([JSON.stringify({prompt:promptEl.value,response:responseEl.value},null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='payload.json'; a.click() }) }
-    if(downloadCsvBtn){ downloadCsvBtn.addEventListener('click', async ()=>{ try{ const key=(apiKeyEl&&apiKeyEl.value)||demoKey; const base=apiBase(); const r=await fetch((base||'')+'/v1/export',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({prompt:promptEl.value,response:responseEl.value})}); if(!r.ok) throw new Error('Export failed: '+r.status); const txt=await r.text(); const blob=new Blob([txt],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='export.csv'; a.click() }catch(e){alert('CSV export error: '+e.message)} }) }
+    if(runBtn){ runBtn.addEventListener('click', async ()=>{
+      try{
+        summary.innerText = 'Running…'; issues.innerHTML='';
+        const body = {prompt: promptEl?.value||'', response: responseEl?.value||''};
+        const r = await postJson('/v1/demo', body, null);
+        renderResult(r);
+      }catch(e){ summary.innerText = 'Error: '+e.message }
+    })}
+
+    if(checkBtn){ checkBtn.addEventListener('click', async ()=>{
+      try{
+        summary.innerText = 'Running auth check…'; issues.innerHTML='';
+        const key = prompt('Paste API key (demo key will be used if blank)') || demoKey;
+        const body = {prompt: promptEl?.value||'', response: responseEl?.value||''};
+        const r = await postJson('/v1/check', body, key);
+        renderResult(r);
+      }catch(e){ summary.innerText = 'Error: '+e.message }
+    })}
+
+    if(csvBtn){ csvBtn.addEventListener('click', async ()=>{
+      try{
+        summary.innerText = 'Exporting CSV…'; issues.innerHTML='';
+        const key = prompt('Paste API key for export (demo key will be used if blank)') || demoKey;
+        const base = effectiveBase();
+        const url = (base? base.replace(/\/$/, '') : '') + '/v1/export';
+        const res = await fetch(url, {method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+key}, body:JSON.stringify({prompt: promptEl?.value||'', response: responseEl?.value||''})});
+        if(!res.ok) throw new Error('Export failed: '+res.status);
+        const txt = await res.text();
+        const blob = new Blob([txt], {type:'text/csv'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='driftforce_export.csv'; a.click();
+        summary.innerText = 'CSV downloaded';
+      }catch(e){ summary.innerText = 'Error: '+e.message }
+    })}
 
   })();
   </script>
