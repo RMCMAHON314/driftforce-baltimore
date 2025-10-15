@@ -66,11 +66,17 @@
                 
                 <div class="service-card">
                     <span class="service-price">$2-5K</span>
-                    <div class="service-icon">🎓</div>
-                    <div class="service-title">Team Workshops</div>
-                    <div class="service-description">
-                        Training on contract-driven development, API governance, 
-                        and compliance implementation
+                    /* Marquee */
+                    .marquee{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface-2);mask-image:linear-gradient(to right,transparent,#000 10%,#000 90%,transparent)}
+                    /* Use transform-only animations and hint to compositor */
+                    .track{display:flex;gap:56px;padding:18px 0;animation:move 36s linear infinite;will-change:transform}
+                    .marquee:hover .track, .marquee:focus-within .track{animation-play-state:paused}
+                    .pill{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--muted);font-weight:800}
+                    @keyframes move{to{transform:translateX(-50%)}}
+                    /* Respect user preference for reduced motion */
+                    @media (prefers-reduced-motion: reduce){
+                        .track{animation: none !important}
+                    }
                     </div>
                     <a href="mailto:rob@infinitedatasolutions.com?subject=Team%20Workshop" class="service-link">
                         Book Workshop →
@@ -233,6 +239,36 @@
             });
         }
 
+    })();
+    </script>
+</script>
+
+    <script>
+    // Marquee accessibility/performance helper
+    (function(){
+        try{
+            const marquee = document.querySelector('.marquee');
+            const track = marquee && marquee.querySelector('.track');
+            if(track){
+                // mark child items as decorative for assistive tech
+                track.querySelectorAll('.pill').forEach(el=>el.setAttribute('aria-hidden','true'));
+
+                // Pause animation when marquee is offscreen
+                const io = new IntersectionObserver(entries=>{
+                    entries.forEach(e=>{
+                        if(!track) return;
+                        track.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
+                    });
+                },{threshold:0});
+                io.observe(marquee);
+
+                // Pause when page is hidden
+                document.addEventListener('visibilitychange', ()=>{
+                    if(!track) return;
+                    track.style.animationPlayState = document.hidden ? 'paused' : 'running';
+                });
+            }
+        }catch(e){console.warn('marquee helper failed', e)}
     })();
     </script>
 
