@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException, Header
+from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, List, Any
@@ -6,11 +7,26 @@ import sqlite3
 import json
 import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 import secrets
 import uvicorn
 
 app = FastAPI(title="DriftForce", version="1.0.0")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    init_db()
+    print("\n✅ Database initialized with demo key")
+    print("🔑 Demo API key: df_demo_key_123")
+    print("📚 Interactive docs: http://localhost:8000/docs")
+    print("🌐 Live API: https://driftforce-api.onrender.com\n")
+    yield
+    # Shutdown (no special teardown needed)
+
+
+app.router.lifespan_context = lifespan
 
 # Add CORS support for browser-based testing
 app.add_middleware(
@@ -24,6 +40,9 @@ class CheckRequest(BaseModel):
     prompt: str
     response: str
     context: Optional[Dict[str, Any]] = {}
+
+class RegisterRequest(BaseModel):
+    email: str
 
 class CheckResponse(BaseModel):
     drift_detected: bool
@@ -42,7 +61,7 @@ def init_db():
     
     # Always ensure demo key exists
     c.execute("INSERT OR REPLACE INTO accounts VALUES (?, ?, ?)",
-              ("df_demo_key_123", "demo@driftforce.ai", datetime.utcnow().isoformat()))
+              ("df_demo_key_123", "demo@driftforce.ai", datetime.now(timezone.utc).isoformat()))
     
     conn.commit()
     conn.close()
@@ -112,13 +131,27 @@ def detect_hallucination(prompt: str, response: str) -> Dict:
         "issues": issues
     }
 
-@app.on_event("startup")
-async def startup():
-    init_db()
-    print("\n✅ Database initialized with demo key")
-    print("🔑 Demo API key: df_demo_key_123")
-    print("📚 Interactive docs: http://localhost:8000/docs")
-    print("🌐 Live API: https://driftforce-api.onrender.com\n")
+
+def parse_api_key(authorization: Optional[str]) -> str:
+    """Normalize various Authorization header formats into an API key string.
+
+    Accepts: 'Bearer <key>', 'bearer <key>' or a bare key. Returns demo key when
+    no header is provided to keep Swagger/testing behavior.
+    """
+    api_key = None
+    if authorization:
+        auth = authorization.strip()
+        if auth.startswith("Bearer ") or auth.startswith("bearer "):
+            api_key = auth.split(" ", 1)[1].strip()
+        else:
+            api_key = auth
+
+    if not api_key:
+        api_key = "df_demo_key_123"
+
+    return api_key
+
+# (Startup handled via lifespan context)
 
 @app.get("/")
 def root():
@@ -141,23 +174,7 @@ def health_check():
 @app.post("/v1/check", response_model=CheckResponse)
 def check(request: CheckRequest, authorization: Optional[str] = Header(None)):
     """Check for hallucination in LLM response"""
-    
-    # Flexible authorization handling for Swagger compatibility
-    api_key = None
-    
-    if authorization:
-        auth = authorization.strip()
-        # Handle different authorization formats
-        if auth.startswith("Bearer "):
-            api_key = auth[7:].strip()  # Remove "Bearer " prefix
-        elif auth.startswith("bearer "):
-            api_key = auth[7:].strip()  # Handle lowercase
-        else:
-            api_key = auth  # Use as-is
-    
-    # Default to demo key if not provided (for Swagger testing)
-    if not api_key:
-        api_key = "df_demo_key_123"
+    api_key = parse_api_key(authorization)
     
     # Validate API key exists
     conn = sqlite3.connect('driftforce.db')
@@ -180,9 +197,9 @@ def check(request: CheckRequest, authorization: Optional[str] = Header(None)):
         conn = sqlite3.connect('driftforce.db')
         c = conn.cursor()
         c.execute("INSERT INTO events VALUES (?, ?, ?, ?, ?, ?)",
-                  (analysis_id, api_key, int(analysis["drift_detected"]), 
-                   analysis["drift_score"], json.dumps(analysis["issues"]), 
-                   datetime.utcnow().isoformat()))
+                  (analysis_id, api_key, int(analysis["drift_detected"]),
+                   analysis["drift_score"], json.dumps(analysis["issues"]),
+                   datetime.now(timezone.utc).isoformat()))
         conn.commit()
         conn.close()
     
@@ -193,40 +210,43 @@ def check(request: CheckRequest, authorization: Optional[str] = Header(None)):
         analysis_id=analysis_id
     )
 
-@app.post("/v1/demo")
+@app.post("/v1/demo", response_model=CheckResponse)
 def demo_check(request: CheckRequest):
     """Demo endpoint - no auth required for testing"""
     analysis = detect_hallucination(request.prompt, request.response)
-    
-    return {
-        "drift_detected": analysis["drift_detected"],
-        "drift_score": analysis["drift_score"],
-        "issues": analysis["issues"],
-        "analysis_id": str(uuid.uuid4()),
-        "note": "Demo endpoint - Get API key at https://buy.stripe.com/5kQ3cu5SHbdd59t2SR9MY00"
-    }
+    return CheckResponse(
+        drift_detected=analysis["drift_detected"],
+        drift_score=analysis["drift_score"],
+        issues=analysis["issues"],
+        analysis_id=str(uuid.uuid4())
+    )
 
 @app.post("/v1/register")
-def register(email: str):
-    """Register for an API key"""
+def register(req: RegisterRequest):
+    """Register for an API key. Accepts JSON body: {"email": "you@company.com"}.
+
+    Returns a `df_live_...` API key. Raises 400 when email invalid or already
+    registered.
+    """
+    email = req.email
     if not email or "@" not in email:
         raise HTTPException(400, "Valid email required")
-    
+
     api_key = f"df_live_{secrets.token_urlsafe(24)}"
-    
+
     conn = sqlite3.connect('driftforce.db')
     c = conn.cursor()
-    
+
     try:
         c.execute("INSERT INTO accounts VALUES (?, ?, ?)",
-                  (api_key, email, datetime.utcnow().isoformat()))
+                  (api_key, email, datetime.now(timezone.utc).isoformat()))
         conn.commit()
     except sqlite3.IntegrityError:
         conn.close()
         raise HTTPException(400, "Email already registered")
     finally:
         conn.close()
-    
+
     return {
         "api_key": api_key,
         "email": email,
@@ -237,20 +257,7 @@ def register(email: str):
 def get_metrics(authorization: Optional[str] = Header(None)):
     """Get usage metrics"""
     
-    # Handle authorization
-    api_key = None
-    
-    if authorization:
-        auth = authorization.strip()
-        if auth.startswith("Bearer "):
-            api_key = auth[7:].strip()
-        elif auth.startswith("bearer "):
-            api_key = auth[7:].strip()
-        else:
-            api_key = auth
-    
-    if not api_key:
-        api_key = "df_demo_key_123"
+    api_key = parse_api_key(authorization)
     
     conn = sqlite3.connect('driftforce.db')
     c = conn.cursor()
