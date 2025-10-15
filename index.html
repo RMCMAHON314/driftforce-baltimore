@@ -1,276 +1,152 @@
-                    <span class="service-price">$75</span>
-                    <div class="service-icon">🔬</div>
-                    <div class="service-title">Technical Deep Dive</div>
-                    <div class="service-description">
-                        One hour with our architects exploring integration, 
-                        scalability, and implementation strategies
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Technical%20Deep%20Dive" class="service-link">
-                        Book Session →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">Project</span>
-                    <div class="service-icon">📝</div>
-                    <div class="service-title">Contract Creation</div>
-                    <div class="service-description">
-                        Design and document API contracts and governance policies 
-                        tailored to your compliance requirements
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Contract%20Creation" class="service-link">
-                        Start Project →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">$3-8K</span>
-                <!-- DEMO PANEL (interactive) -->
-                <section id="demo" class="section" style="background:linear-gradient(180deg,#071026,#071426);border-top:1px solid var(--border);">
-                    <div class="wrap" style="max-width:900px;">
-                        <h2 style="margin-bottom:8px">Try the DriftForce Detector</h2>
-                        <p class="sub" style="margin-bottom:14px">Paste a prompt and a model response below and click "Run Demo" to call the demo endpoint (no auth required).</p>
-                        <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px">
-                            <select id="preset" aria-label="Presets" style="padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);">
-                                <option value="">— select a preset —</option>
-                                <option value="ai_disclosure">AI self-disclosure + fake URL</option>
-                                <option value="unsourced_stat">Unsourced statistics</option>
-                                <option value="unsourced_reference">Unsourced reference</option>
-                            </select>
-                            <textarea id="prompt" placeholder="Prompt (what you asked)" rows="3" style="padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);resize:vertical"></textarea>
-                            <textarea id="response" placeholder="Model response (what it replied)" rows="4" style="padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);resize:vertical"></textarea>
-                            <input id="apiKey" placeholder="Optional API key (leave empty to use demo)" style="padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);" />
-                            <div style="display:flex;gap:8px">
-                                <button id="runDemo" class="btn btn-primary">Run Demo</button>
-                                <button id="runCheck" class="btn btn-outline">Run Check (with API key)</button>
-                                <button id="copyPayload" class="btn">Copy Payload</button>
-                                <button id="downloadJson" class="btn">Download JSON</button>
-                                <button id="downloadCsv" class="btn btn-blue">Export CSV</button>
-                            </div>
-                            <div id="summary" style="margin-top:12px"></div>
-                            <div id="issuesList" style="margin-top:10px;display:grid;gap:8px"></div>
-                        </div>
-                    </div>
-                </section>
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DriftForce™ — AI Governance Demo</title>
+  <meta name="description" content="DriftForce demo page" />
+  <meta name="driftforce-api-base" content="" />
+  <style>
+    :root{--bg:#0b1220;--surface:#111b32;--surface-2:#0e1629;--text:#e6eaf2;--muted:#aab4c7;--border:#1f2a44;--gold:#facc15}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    h1,h2{margin:0 0 12px}
+    a{color:#66a3ff}
 
-                    <div class="service-icon">🏗️</div>
-                    <div class="service-title">Architecture Design</div>
-                    <div class="service-description">
-                        Build next-gen API architectures that enforce contracts 
-                        and governance across your entire stack
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Architecture%20Design" class="service-link">
-                        Design System →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">$2-5K</span>
-                    /* Marquee */
-                    .marquee{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface-2);mask-image:linear-gradient(to right,transparent,#000 10%,#000 90%,transparent)}
-                    /* Use transform-only animations and hint to compositor */
-                    .track{display:flex;gap:56px;padding:18px 0;animation:move 36s linear infinite;will-change:transform}
-                    .marquee:hover .track, .marquee:focus-within .track{animation-play-state:paused}
-                    .pill{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--muted);font-weight:800}
-                    @keyframes move{to{transform:translateX(-50%)}}
-                    /* Respect user preference for reduced motion */
-                    @media (prefers-reduced-motion: reduce){
-                        .track{animation: none !important}
-                    }
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Team%20Workshop" class="service-link">
-                        Book Workshop →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">Monthly</span>
-                    <div class="service-icon">🔧</div>
-                    <div class="service-title">Ongoing Support</div>
-                    <div class="service-description">
-                        Contract maintenance, updates, compliance monitoring, 
-                        and continuous optimization
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Support%20Services" class="service-link">
-                        Get Support →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">Custom</span>
-                    <div class="service-icon">✅</div>
-                    <div class="service-title">Audit & Compliance</div>
-                    <div class="service-description">
-                        Comprehensive audit services, compliance verification, 
-                        and regulatory reporting
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Audit%20Services" class="service-link">
-                        Schedule Audit →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">Retainer</span>
-                    <div class="service-icon">📊</div>
-                    <div class="service-title">Analytics & Insights</div>
-                    <div class="service-description">
-                        Custom dashboards for contract performance, compliance 
-                        metrics, and governance effectiveness
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Analytics%20Services" class="service-link">
-                        Get Insights →
-                    </a>
-                </div>
-                
-                <div class="service-card">
-                    <span class="service-price">Grant</span>
-                    <div class="service-icon">🎓</div>
-                    <div class="service-title">Education Initiative</div>
-                    <div class="service-description">
-                        Partner with us to bring AI governance education 
-                        to Maryland universities and communities
-                    </div>
-                    <a href="mailto:rob@infinitedatasolutions.com?subject=Education%20Partnership" class="service-link">
-                        Join Initiative →
-                    </a>
-                </div>
-        const downloadJsonBtn = document.getElementById('downloadJson');
-        const downloadCsvBtn = document.getElementById('downloadCsv');
+    /* simple layout trimmed for demo */
+    .service-card{background:transparent;padding:12px;border-bottom:1px solid rgba(255,255,255,0.03)}
 
-        if(!promptEl || !responseEl) return; // no demo UI present
+    /* Demo panel */
+    #demo{background:linear-gradient(180deg,#071026,#071426);padding:24px;border-radius:8px;margin:18px 0}
+    #demo textarea,input,select{width:100%;box-sizing:border-box;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:10px;border-radius:8px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:6px;background:#fff;color:#071026;border:none;cursor:pointer;margin-right:8px}
+    .btn-outline{background:transparent;border:1px solid #fff;color:#fff}
 
-        const demoKey = 'df_demo_key_123';
-        const presets = {
-            'ai_disclosure': {prompt:'How do I cancel?', response:'As an AI model, visit https://fake.com — 97% success.'},
-            'unsourced_stat': {prompt:'What are the success rates?', response:'Our product has a 92% success rate across customers.'},
-            'unsourced_reference': {prompt:'Is it proven?', response:'According to a recent study, 60% of trials showed improvement.'}
-        };
+    /* Marquee */
+    .marquee{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface-2);mask-image:linear-gradient(to right,transparent,#000 10%,#000 90%,transparent);padding:8px}
+    .track{display:flex;gap:18px;padding:8px 0;animation:move 36s linear infinite;will-change:transform}
+    .pill{padding:6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--muted)}
+    @keyframes move{to{transform:translateX(-50%)}}
+    @media (prefers-reduced-motion: reduce){.track{animation:none!important}}
+    .marquee:hover .track,.marquee:focus-within .track{animation-play-state:paused}
 
-        if(presetSelect){
-            presetSelect.addEventListener('change', ()=>{
-                const v = presetSelect.value;
-                if(!v) return;
-                promptEl.value = presets[v].prompt;
-                responseEl.value = presets[v].response;
-            });
-        }
+    /* small utility */
+    .muted{color:var(--muted)}
+    #issuesList .issue{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>DriftForce — Demo</h1>
+      <p class="muted">An embedded demo of the drift/hallucination detector. Use the demo key or paste your own API key.</p>
+    </header>
 
-        function apiBase(){
-            return document.querySelector('meta[name="driftforce-api-base"]')?.content || '';
-        }
+    <section class="marquee" aria-hidden="true">
+      <div class="track" role="presentation">
+        <div class="pill">Snowflake</div>
+        <div class="pill">Databricks</div>
+        <div class="pill">dbt</div>
+        <div class="pill">Fivetran</div>
+        <div class="pill">Sigstore</div>
+        <div class="pill">NIST RMF</div>
+        <div class="pill">EU AI Act</div>
+        <div class="pill">Snowflake</div>
+        <div class="pill">Databricks</div>
+      </div>
+    </section>
 
-        async function callApi(path, body, key){
-            const headers = {'Content-Type':'application/json'};
-            if(key) headers['Authorization'] = 'Bearer ' + key;
-            const base = apiBase();
-            const url = (base || '') + path;
-            const r = await fetch(url, {method:'POST', headers, body: JSON.stringify(body)});
-            if(!r.ok) throw new Error('API error: '+r.status);
-            return r.json();
-        }
+    <section id="demo">
+      <h2>Try the DriftForce Detector</h2>
+      <p class="muted">Paste a prompt and the model's response and click <strong>Run Demo</strong>.</p>
+      <select id="preset" style="margin-bottom:8px">
+        <option value="">— select a preset —</option>
+        <option value="ai_disclosure">AI self-disclosure + fake URL</option>
+        <option value="unsourced_stat">Unsourced statistics</option>
+        <option value="unsourced_reference">Unsourced reference</option>
+      </select>
+      <textarea id="prompt" rows="3" placeholder="Prompt (what you asked)" style="margin-top:8px"></textarea>
+      <textarea id="response" rows="4" placeholder="Model response (what it replied)" style="margin-top:8px"></textarea>
+      <input id="apiKey" placeholder="Optional API key (leave empty to use demo)" style="margin-top:8px" />
 
-        function renderIssues(result){
-            if(!issuesList || !summary) return;
-            issuesList.innerHTML = '';
-            summary.innerHTML = '';
-            const badge = document.createElement('div');
-            badge.className = 'result-badge';
-            badge.innerHTML = `<div class='score-gauge'>${(result.drift_score*100).toFixed(0)}%</div> <div>${result.drift_detected? 'DRIFT' : 'OK'}</div>`;
-            summary.appendChild(badge);
-            (result.issues||[]).forEach(issue=>{
-                const div = document.createElement('div');
-                div.className = 'issue ' + (issue.severity==='critical' ? 'sev-critical' : issue.severity==='high' ? 'sev-high' : issue.severity==='medium' ? 'sev-medium' : 'sev-low');
-                div.innerHTML = `<div style='display:flex; justify-content:space-between; align-items:center;'><strong>${issue.type}</strong><span class='muted'>score ${issue.score?issue.score.toFixed(2):'N/A'}</span></div><div style='margin-top:6px'>${issue.detail}</div><div style='margin-top:8px; font-size:13px; color:var(--gray-600)'><strong>Recommendation:</strong> ${issue.recommendation || '—'}</div><div style='margin-top:8px; font-size:13px; color:var(--gray-700)'><strong>Evidence:</strong> <code>${issue.evidence||''}</code></div>`;
-                issuesList.appendChild(div);
-            });
-        }
+      <div style="margin-top:12px">
+        <button id="runDemo" class="btn">Run Demo</button>
+        <button id="runCheck" class="btn btn-outline">Run Check (with API key)</button>
+        <button id="copyPayload" class="btn">Copy Payload</button>
+        <button id="downloadJson" class="btn">Download JSON</button>
+        <button id="downloadCsv" class="btn">Export CSV</button>
+      </div>
 
-        if(runDemoBtn){
-            runDemoBtn.addEventListener('click', async ()=>{
-                try{
-                    const body = {prompt: promptEl.value, response: responseEl.value};
-                    const res = await callApi('/v1/demo', body);
-                    renderIssues(res);
-                }catch(e){ alert('Error calling demo: '+e.message) }
-            });
-        }
+      <div id="summary" style="margin-top:12px"></div>
+      <div id="issuesList" style="margin-top:10px"></div>
+    </section>
 
-        if(runCheckBtn){
-            runCheckBtn.addEventListener('click', async ()=>{
-                try{
-                    const key = (apiKeyEl && apiKeyEl.value) || demoKey;
-                    const res = await callApi('/v1/check', {prompt: promptEl.value, response: responseEl.value}, key);
-                    renderIssues(res);
-                }catch(e){ alert('Error calling check: '+e.message) }
-            });
-        }
+    <section>
+      <h2>Services</h2>
+      <div class="service-card">
+        <strong>Technical Deep Dive — $75</strong>
+        <p class="muted">One hour with our architects exploring integration, scalability, and implementation strategies</p>
+      </div>
+    </section>
 
-        if(copyPayloadBtn){
-            copyPayloadBtn.addEventListener('click', ()=>{
-                const payload = {prompt: promptEl.value, response: responseEl.value};
-                navigator.clipboard?.writeText(JSON.stringify(payload, null, 2));
-            });
-        }
+    <footer style="margin-top:30px; font-size:13px;color:var(--muted)">
+      © 2025 DriftForce — Demo
+    </footer>
+  </div>
 
-        if(downloadJsonBtn){
-            downloadJsonBtn.addEventListener('click', ()=>{
-                const payload = {prompt: promptEl.value, response: responseEl.value};
-                const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a'); a.href = url; a.download = 'payload.json'; a.click();
-            });
-        }
+  <script>
+  (function(){
+    const presetSelect = document.getElementById('preset');
+    const promptEl = document.getElementById('prompt');
+    const responseEl = document.getElementById('response');
+    const apiKeyEl = document.getElementById('apiKey');
+    const runDemoBtn = document.getElementById('runDemo');
+    const runCheckBtn = document.getElementById('runCheck');
+    const issuesList = document.getElementById('issuesList');
+    const summary = document.getElementById('summary');
+    const copyPayloadBtn = document.getElementById('copyPayload');
+    const downloadJsonBtn = document.getElementById('downloadJson');
+    const downloadCsvBtn = document.getElementById('downloadCsv');
 
-        if(downloadCsvBtn){
-            downloadCsvBtn.addEventListener('click', async ()=>{
-                try{
-                    const key = (apiKeyEl && apiKeyEl.value) || demoKey;
-                    const base = apiBase();
-                    const url = (base || '') + '/v1/export';
-                    const r = await fetch(url, {method:'POST', headers: {'Content-Type':'application/json', 'Authorization': 'Bearer '+key}, body: JSON.stringify({prompt: promptEl.value, response: responseEl.value})});
-                    if(!r.ok) throw new Error('Export failed: '+r.status);
-                    const txt = await r.text();
-                    const blob = new Blob([txt], {type:'text/csv'});
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = 'driftforce-export.csv';
-                    a.click();
-                }catch(e){ alert('CSV export error: '+e.message) }
-            });
-        }
+    const demoKey = 'df_demo_key_123';
+    const presets = {
+      'ai_disclosure': {prompt:'How do I cancel?', response:'As an AI model, visit https://fake.com — 97% success.'},
+      'unsourced_stat': {prompt:'What are the success rates?', response:'Our product has a 92% success rate across customers.'},
+      'unsourced_reference': {prompt:'Is it proven?', response:'According to a recent study, 60% of trials showed improvement.'}
+    };
 
-    })();
-    </script>
-</script>
+    if(presetSelect){
+      presetSelect.addEventListener('change', ()=>{
+        const v = presetSelect.value; if(!v) return; promptEl.value = presets[v].prompt; responseEl.value = presets[v].response;
+      });
+    }
 
-    <script>
-    // Marquee accessibility/performance helper
-    (function(){
-        try{
-            const marquee = document.querySelector('.marquee');
-            const track = marquee && marquee.querySelector('.track');
-            if(track){
-                // mark child items as decorative for assistive tech
-                track.querySelectorAll('.pill').forEach(el=>el.setAttribute('aria-hidden','true'));
+    function apiBase(){return document.querySelector('meta[name="driftforce-api-base"]')?.content || ''}
 
-                // Pause animation when marquee is offscreen
-                const io = new IntersectionObserver(entries=>{
-                    entries.forEach(e=>{
-                        if(!track) return;
-                        track.style.animationPlayState = e.isIntersecting ? 'running' : 'paused';
-                    });
-                },{threshold:0});
-                io.observe(marquee);
+    async function callApi(path, body, key){
+      const headers = {'Content-Type':'application/json'}; if(key) headers['Authorization'] = 'Bearer ' + key;
+      const base = apiBase(); const url = (base || '') + path; const r = await fetch(url, {method:'POST', headers, body: JSON.stringify(body)});
+      if(!r.ok) throw new Error('API error: '+r.status); return r.json();
+    }
 
-                // Pause when page is hidden
-                document.addEventListener('visibilitychange', ()=>{
-                    if(!track) return;
-                    track.style.animationPlayState = document.hidden ? 'paused' : 'running';
-                });
-            }
-        }catch(e){console.warn('marquee helper failed', e)}
-    })();
-    </script>
+    function renderIssues(result){
+      issuesList.innerHTML = ''; summary.innerHTML = '';
+      const badge = document.createElement('div'); badge.className='result-badge'; badge.innerHTML = `<div style="font-weight:800">${(result.drift_score*100).toFixed(0)}%</div><div>${result.drift_detected? 'DRIFT':'OK'}</div>`; summary.appendChild(badge);
+      (result.issues||[]).forEach(issue=>{ const d = document.createElement('div'); d.className='issue'; d.innerHTML = `<strong>${issue.type}</strong><div style="color:var(--muted)">${issue.detail}</div>`; issuesList.appendChild(d) })
+    }
 
+    if(runDemoBtn){ runDemoBtn.addEventListener('click', async ()=>{ try{ const body={prompt:promptEl.value,response:responseEl.value}; const res=await callApi('/v1/demo', body); renderIssues(res) }catch(e){alert('Error: '+e.message)} }) }
+    if(runCheckBtn){ runCheckBtn.addEventListener('click', async ()=>{ try{ const key=(apiKeyEl&&apiKeyEl.value)||demoKey; const res=await callApi('/v1/check',{prompt:promptEl.value,response:responseEl.value}, key); renderIssues(res) }catch(e){alert('Error: '+e.message)} }) }
+    if(copyPayloadBtn){ copyPayloadBtn.addEventListener('click', ()=>{ navigator.clipboard?.writeText(JSON.stringify({prompt:promptEl.value,response:responseEl.value},null,2)) }) }
+    if(downloadJsonBtn){ downloadJsonBtn.addEventListener('click', ()=>{ const blob=new Blob([JSON.stringify({prompt:promptEl.value,response:responseEl.value},null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='payload.json'; a.click() }) }
+    if(downloadCsvBtn){ downloadCsvBtn.addEventListener('click', async ()=>{ try{ const key=(apiKeyEl&&apiKeyEl.value)||demoKey; const base=apiBase(); const r=await fetch((base||'')+'/v1/export',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({prompt:promptEl.value,response:responseEl.value})}); if(!r.ok) throw new Error('Export failed: '+r.status); const txt=await r.text(); const blob=new Blob([txt],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='export.csv'; a.click() }catch(e){alert('CSV export error: '+e.message)} }) }
+
+  })();
+  </script>
+
+  <script>
+  // Marquee helper: pause when offscreen or when page hidden
+  (function(){try{const marquee=document.querySelector('.marquee');const track=marquee&&marquee.querySelector('.track');if(track){track.querySelectorAll('.pill').forEach(el=>el.setAttribute('aria-hidden','true'));const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!track) return;track.style.animationPlayState=e.isIntersecting?'running':'paused';})},{threshold:0});io.observe(marquee);document.addEventListener('visibilitychange',()=>{if(!track) return;track.style.animationPlayState=document.hidden?'paused':'running'})}}catch(e){console.warn('marquee helper failed',e)}})();
+  </script>
 </body>
 </html>
