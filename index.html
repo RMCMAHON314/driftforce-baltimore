@@ -486,8 +486,20 @@ result = driftforce.check(response)
         }
 
         if(downloadCsvBtn){
-            downloadCsvBtn.addEventListener('click', ()=>{
-                alert('CSV export coming soon');
+            downloadCsvBtn.addEventListener('click', async ()=>{
+                try{
+                    const key = (apiKeyEl && apiKeyEl.value) || demoKey;
+                    const base = apiBase();
+                    const url = (base || '') + '/v1/export';
+                    const r = await fetch(url, {method:'POST', headers: {'Content-Type':'application/json', 'Authorization': 'Bearer '+key}, body: JSON.stringify({prompt: promptEl.value, response: responseEl.value})});
+                    if(!r.ok) throw new Error('Export failed: '+r.status);
+                    const txt = await r.text();
+                    const blob = new Blob([txt], {type:'text/csv'});
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'driftforce-export.csv';
+                    a.click();
+                }catch(e){ alert('CSV export error: '+e.message) }
             });
         }
 

@@ -50,3 +50,16 @@ def test_register_and_metrics():
     r = client.get("/v1/metrics", headers=headers)
     # 401 or 200 are acceptable depending on event storage; assert no server error
     assert r.status_code in (200, 401)
+
+
+def test_batch_endpoint():
+    payload = [
+        {"prompt": "P1", "response": "As an AI model, see https://fake.com"},
+        {"prompt": "P2", "response": "According to a study, 60% of X"}
+    ]
+    r = client.post("/v1/batch", json=payload)
+    assert r.status_code == 200
+    data = r.json()
+    assert isinstance(data, list)
+    assert len(data) == 2
+    assert "drift_detected" in data[0]

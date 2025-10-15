@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Header, Response
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -44,10 +44,19 @@ class CheckRequest(BaseModel):
 class RegisterRequest(BaseModel):
     email: str
 
+class Issue(BaseModel):
+    type: str
+    severity: str
+    detail: str
+    score: Optional[float] = None
+    recommendation: Optional[str] = None
+    evidence: Optional[Any] = None
+
+
 class CheckResponse(BaseModel):
     drift_detected: bool
     drift_score: float
-    issues: List[Dict[str, str]]
+    issues: List[Issue]
     analysis_id: str
 
 def init_db():
@@ -82,11 +91,15 @@ def detect_hallucination(prompt: str, response: str) -> Dict:
     
     for pattern in ai_patterns:
         if re.search(pattern, response, re.IGNORECASE):
-            score += 0.35
+            increment = 0.35
+            score += increment
             issues.append({
                 "type": "ai_disclosure",
                 "severity": "high",
-                "detail": "AI self-reference detected"
+                "detail": "AI self-reference detected",
+                "score": increment,
+                "recommendation": "Remove AI self-reference or mark as an explicit disclosure.",
+                "evidence": re.search(pattern, response, re.IGNORECASE).group(0)
             })
             break
     
@@ -101,12 +114,16 @@ def detect_hallucination(prompt: str, response: str) -> Dict:
     
     new_urls = response_urls - prompt_urls
     if new_urls:
-        score += 0.4
+        increment = 0.4
+        score += increment
         for url in list(new_urls)[:1]:  # Only report first fake URL
             issues.append({
                 "type": "fake_url",
                 "severity": "critical",
-                "detail": f"URL not in prompt: {url}"
+                "detail": f"URL not in prompt: {url}",
+                "score": increment,
+                "recommendation": "Verify the URL before publishing. Prefer linking to known sources.",
+                "evidence": url
             })
     
     # Check for unsourced statistics
@@ -117,13 +134,50 @@ def detect_hallucination(prompt: str, response: str) -> Dict:
         prompt_stats = re.findall(pattern, prompt, re.IGNORECASE)
         
         if response_stats and not prompt_stats:
-            score += 0.25
+            increment = 0.25
+            score += increment
             issues.append({
                 "type": "unsourced_stat",
                 "severity": "medium",
-                "detail": "Unverifiable statistic"
+                "detail": "Unverifiable statistic",
+                "score": increment,
+                "recommendation": "Add a source or caveat for this statistic.",
+                "evidence": response_stats[0]
             })
             break
+
+    # New rule: unsourced reference (mentions 'study', 'research', 'according to') without citation
+    ref_patterns = [r"according to [A-Za-z0-9 ,.&'-]+", r"study finds", r"research shows"]
+    for pattern in ref_patterns:
+        if re.search(pattern, response, re.IGNORECASE) and not re.search(pattern, prompt, re.IGNORECASE):
+            increment = 0.2
+            score += increment
+            m = re.search(pattern, response, re.IGNORECASE)
+            issues.append({
+                "type": "unsourced_reference",
+                "severity": "medium",
+                "detail": "Reference to research or study without citation",
+                "score": increment,
+                "recommendation": "Provide full citation or link to the referenced study.",
+                "evidence": m.group(0) if m else None
+            })
+            break
+
+    # New rule: specific year or date claims that could be fabricated
+    year_pattern = r"\b(19|20)\d{2}\b"
+    years_in_response = re.findall(year_pattern, response)
+    years_in_prompt = re.findall(year_pattern, prompt)
+    if years_in_response and not years_in_prompt:
+        increment = 0.15
+        score += increment
+        issues.append({
+            "type": "year_claim",
+            "severity": "low",
+            "detail": "Specific year/date mentioned without source",
+            "score": increment,
+            "recommendation": "Confirm the date against authoritative records.",
+            "evidence": list(set(re.findall(year_pattern, response)))
+        })
     
     return {
         "drift_detected": score >= 0.3,
@@ -220,6 +274,76 @@ def demo_check(request: CheckRequest):
         issues=analysis["issues"],
         analysis_id=str(uuid.uuid4())
     )
+
+
+@app.post("/v1/batch")
+def batch_check(requests: List[CheckRequest], authorization: Optional[str] = Header(None)):
+    """Process a batch of checks and return list of analyses.
+
+    Authorization applies per-call; demo key behavior applies (no persistence).
+    """
+    api_key = parse_api_key(authorization)
+    results = []
+    for req in requests:
+        analysis = detect_hallucination(req.prompt, req.response)
+        analysis_id = str(uuid.uuid4())
+
+        # Store per-request (skip for demo)
+        if api_key != "df_demo_key_123":
+            conn = sqlite3.connect('driftforce.db')
+            c = conn.cursor()
+            c.execute("INSERT INTO events VALUES (?, ?, ?, ?, ?, ?)",
+                      (analysis_id, api_key, int(analysis["drift_detected"]),
+                       analysis["drift_score"], json.dumps(analysis["issues"]),
+                       datetime.now(timezone.utc).isoformat()))
+            conn.commit()
+            conn.close()
+
+        results.append({
+            "drift_detected": analysis["drift_detected"],
+            "drift_score": analysis["drift_score"],
+            "issues": analysis["issues"],
+            "analysis_id": analysis_id
+        })
+
+    return results
+
+
+@app.post("/v1/export")
+def export_check(request: CheckRequest, authorization: Optional[str] = Header(None)):
+    """Run the detector and return a CSV representation of the analysis.
+
+    Returns: text/csv with columns: analysis_id, drift_detected, drift_score, issue_type, issue_severity, issue_detail
+    """
+    api_key = parse_api_key(authorization)
+
+    # validate key exists (demo OK)
+    conn = sqlite3.connect('driftforce.db')
+    c = conn.cursor()
+    c.execute("SELECT 1 FROM accounts WHERE api_key = ?", (api_key,))
+    if not c.fetchone():
+        conn.close()
+        raise HTTPException(401, "Invalid API key")
+    conn.close()
+
+    analysis = detect_hallucination(request.prompt, request.response)
+    analysis_id = str(uuid.uuid4())
+
+    # build CSV
+    lines = ["analysis_id,drift_detected,drift_score,issue_type,issue_severity,issue_detail"]
+    issues = analysis.get('issues', [])
+    if not issues:
+        lines.append(f"{analysis_id},{int(analysis['drift_detected'])},{analysis['drift_score']},,,")
+    else:
+        for issue in issues:
+            typ = issue.get('type','')
+            sev = issue.get('severity','')
+            det = issue.get('detail','').replace('\n',' ').replace(',', ' ')
+            lines.append(f"{analysis_id},{int(analysis['drift_detected'])},{analysis['drift_score']},{typ},{sev},{det}")
+
+    csv_text = "\n".join(lines)
+
+    return Response(content=csv_text, media_type='text/csv')
 
 @app.post("/v1/register")
 def register(req: RegisterRequest):
