@@ -25,6 +25,34 @@
                 
                 <div class="service-card">
                     <span class="service-price">$3-8K</span>
+                <!-- DEMO PANEL (interactive) -->
+                <section id="demo" class="section" style="background:linear-gradient(180deg,#071026,#071426);border-top:1px solid var(--border);">
+                    <div class="wrap" style="max-width:900px;">
+                        <h2 style="margin-bottom:8px">Try the DriftForce Detector</h2>
+                        <p class="sub" style="margin-bottom:14px">Paste a prompt and a model response below and click "Run Demo" to call the demo endpoint (no auth required).</p>
+                        <div style="display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px">
+                            <select id="preset" aria-label="Presets" style="padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);">
+                                <option value="">— select a preset —</option>
+                                <option value="ai_disclosure">AI self-disclosure + fake URL</option>
+                                <option value="unsourced_stat">Unsourced statistics</option>
+                                <option value="unsourced_reference">Unsourced reference</option>
+                            </select>
+                            <textarea id="prompt" placeholder="Prompt (what you asked)" rows="3" style="padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);resize:vertical"></textarea>
+                            <textarea id="response" placeholder="Model response (what it replied)" rows="4" style="padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);resize:vertical"></textarea>
+                            <input id="apiKey" placeholder="Optional API key (leave empty to use demo)" style="padding:10px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);" />
+                            <div style="display:flex;gap:8px">
+                                <button id="runDemo" class="btn btn-primary">Run Demo</button>
+                                <button id="runCheck" class="btn btn-outline">Run Check (with API key)</button>
+                                <button id="copyPayload" class="btn">Copy Payload</button>
+                                <button id="downloadJson" class="btn">Download JSON</button>
+                                <button id="downloadCsv" class="btn btn-blue">Export CSV</button>
+                            </div>
+                            <div id="summary" style="margin-top:12px"></div>
+                            <div id="issuesList" style="margin-top:10px;display:grid;gap:8px"></div>
+                        </div>
+                    </div>
+                </section>
+
                     <div class="service-icon">🏗️</div>
                     <div class="service-title">Architecture Design</div>
                     <div class="service-description">
